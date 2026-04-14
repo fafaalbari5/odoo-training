@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="default_asset_approval_config" model="asset.approval.config">
+        <field name="name">Default Approval Matrix</field>
+        <field name="level_1_user_id" ref="base.user_admin"/>
+        <field name="level_2_user_id" ref="base.user_admin"/>
+        <field name="level_3_user_id" ref="base.user_admin"/>
+        <field name="level_1_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        <field name="level_2_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        <field name="level_3_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+    </record>
+</odoo>

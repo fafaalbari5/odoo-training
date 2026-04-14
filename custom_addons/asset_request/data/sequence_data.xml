@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sequence_asset_request" model="ir.sequence">
+        <field name="name">Asset Request Sequence</field>
+        <field name="code">asset.request</field>
+        <field name="prefix">REQ/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="sequence_asset_leasing_amortization" model="ir.sequence">
+        <field name="name">Lease Amortization Sequence</field>
+        <field name="code">asset.leasing.amortization</field>
+        <field name="prefix">LAMO/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -34,16 +34,20 @@ backups/
 *.swo
 *~
 
-# Configuration files (jangan upload yang ada password)
+# Configuration files (contoh config aman, config asli jangan)
 config/*.conf
 config/*.ini
 !config/odoo.conf.example
 
-# Data and logs
-data/
-logs/
+# Data and logs (hanya di root)
+/backups/
+/data/
+/logs/
+
+# Database dumps
 *.dump
 *.dump.sql
+*.backup
 
 # OS generated files
 Thumbs.db
@@ -67,10 +71,12 @@ docker-compose.override.yml
 *.local
 *.secret
 
-# Odoo filestore
+# Odoo specific
 odoo/filestore/
+.sessions/
+.cache/
 
-# Various virtualenv
+# Virtualenv
 bin/
 build/
 dist/
@@ -78,20 +84,6 @@ include/
 lib/
 man/
 share/
-
-
-# Database backups dari Odoo
-*.dump.sql
-*.backup
-
-# Windows thumbnail cache
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Odoo session and cache
-.sessions/
-.cache/
 
 # Test reports
 test-reports/

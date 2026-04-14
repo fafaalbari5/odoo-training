@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cron_send_approval_reminders" model="ir.cron">
+        <field name="name">Send Approval Reminders</field>
+        <field name="model_id" ref="model_asset_request_cron"/>
+        <field name="state">code</field>
+        <field name="code">model.send_approval_reminders()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 08:00:00')"/>
+    </record>
+
+    <record id="cron_auto_post_vendor_bills" model="ir.cron">
+        <field name="name">Auto Post Vendor Bills</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_post_vendor_bills()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')"/>
+    </record>
+</odoo>
