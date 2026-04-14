@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_asset_request" model="ir.actions.act_window">
+        <field name="name">Asset Requests</field>
+        <field name="res_model">asset.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_asset_request_list" model="ir.ui.view">
+        <field name="name">asset.request.list</field>
+        <field name="model">asset.request</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'draft'" decoration-bf="state == 'new'" decoration-warning="state == 'waiting_approval'" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'">
+                <field name="name"/>
+                <field name="date_display"/>
+                <field name="partner_id"/>
+                <field name="type_of_request"/>
+                <field name="required_date_display"/>
+                <field name="max_approval_level" string="Required Level"/>
+                <field name="current_approval_level" string="Current Level"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_asset_request_form" model="ir.ui.view">
+        <field name="name">asset.request.form</field>
+        <field name="model">asset.request</field>
+        <field name="arch" type="xml">
+            <form string="Asset Request">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state not in ('draft', 'new')"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'waiting_approval' or not can_approve"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state != 'waiting_approval' or not can_reject"/>
+                    <button name="action_set_draft" string="Set to Draft" type="object" class="btn-secondary" invisible="state != 'rejected' or not can_set_draft"/>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-info" invisible="state != 'waiting_approval'" confirm="Send notification reminder to pending approvers?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,new,waiting_approval,approved,rejected" options="{'statusbar_colors': {'draft': '#888888', 'new': '#000000', 'waiting_approval': '#f3c63e', 'approved': '#21ba45', 'rejected': '#db2828'}}"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="date" widget="date" options="{'date_format': 'MM/dd/yyyy'}"/>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="type_of_request"/>
+                            <field name="required_date" widget="date" options="{'date_format': 'MM/dd/yyyy'}"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="max_approval_level" string="Required Approval Level" readonly="1"/>
+                            <field name="current_approval_level" string="Current Approval Level" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Notes &amp; Attachments">
+                        <field name="notes" widget="textarea" placeholder="Add notes or remarks here..."/>
+                        <field name="attachment_ids" widget="many2many_binary"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Request Lines">
+                            <field name="line_readonly" invisible="1"/>
+                            <field name="line_ids" readonly="line_readonly">
+                                <list editable="bottom" create="state == 'new'" delete="state == 'new'">
+                                    <field name="product_brand_id" string="Product Brand" widget="many2one" options="{'no_create': True}"/>
+                                    <field name="product_model_id" string="Product Model" widget="many2one" options="{'no_create': True}" domain="[('brand_id', '=', product_brand_id)]"/>
+                                    <field name="quantity"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Approval Stage">
+                            <field name="approval_line_ids">
+                                <list string="Approval History" create="false" delete="false" edit="false" readonly="1" decoration-warning="status == 'waiting'" decoration-bf="status == 'pending'" decoration-success="status == 'approved'" decoration-danger="status == 'rejected'" decoration-muted="status == 'cancelled'">
+                                    <field name="approval_round" string="Round"/>
+                                    <field name="approval_label" string="Level"/>
+                                    <field name="display_approver_id" string="Approver"/>
+                                    <field name="status" string="Status" widget="badge"/>
+                                    <field name="approval_date" string="Approval Date"/>
+                                    <field name="reject_date" string="Reject Date"/>
+                                    <field name="reject_notes" string="Reject Notes"/>
+                                    <field name="reject_attachment_ids" string="Reject Attachments"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_asset_request_approval_reject_form" model="ir.ui.view">
+        <field name="name">asset.request.approval.reject.form</field>
+        <field name="model">asset.request.approval.reject</field>
+        <field name="arch" type="xml">
+            <form string="Reject Approval">
+                <group>
+                    <field name="request_id" readonly="1"/>
+                    <field name="approval_id" readonly="1"/>
+                    <field name="reject_notes"/>
+                    <field name="reject_attachment_ids" widget="many2many_binary"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_reject" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

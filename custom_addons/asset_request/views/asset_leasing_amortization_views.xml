@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_asset_leasing_amortization" model="ir.actions.act_window">
+        <field name="name">Lease Amortization</field>
+        <field name="res_model">asset.leasing.amortization</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create amortization plan from approved asset requests.</p>
+        </field>
+    </record>
+
+    <record id="view_asset_leasing_amortization_tree" model="ir.ui.view">
+        <field name="name">asset.leasing.amortization.list</field>
+        <field name="model">asset.leasing.amortization</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="request_id" string="Asset Request"/>
+                <field name="partner_id"/>
+                <field name="principal"/>
+                <field name="annual_rate"/>
+                <field name="term_years"/>
+                <field name="months"/>
+                <field name="monthly_payment"/>
+                <field name="start_date" widget="date"/>
+                <field name="state" widget="badge"/>
+                <field name="vendor_bills_created" widget="boolean" optional="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_asset_leasing_amortization_form" model="ir.ui.view">
+        <field name="name">asset.leasing.amortization.form</field>
+        <field name="model">asset.leasing.amortization</field>
+        <field name="arch" type="xml">
+            <form string="Lease Amortization">
+                <header>
+                    <button name="action_generate_schedule" 
+                            string="Generate Schedule" 
+                            type="object" 
+                            class="btn-primary" 
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm_schedule" 
+                            string="Confirm" 
+                            type="object" 
+                            class="btn-success" 
+                            invisible="state != 'computed'"/>
+                    <button name="action_reset" 
+                            string="Reset" 
+                            type="object" 
+                            class="btn-secondary" 
+                            invisible="state != 'computed'"/>
+                    <button name="action_create_vendor_bills" 
+                            string="Create Vendor Bills" 
+                            type="object" 
+                            class="btn-primary" 
+                            invisible="state != 'confirmed' or vendor_bills_created == True"/>
+                    <button name="action_edit_accounting_config" 
+                            string="Edit Accounting Config" 
+                            type="object" 
+                            class="btn-secondary" 
+                            invisible="state != 'confirmed' or vendor_bills_created == True"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,computed,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    
+                    <group string="Asset Request Reference">
+                        <group>
+                            <field name="request_id" string="Asset Request" domain="[('state', '=', 'approved')]" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Loan Information">
+                        <group>
+                            <field name="principal" widget="monetary" readonly="state in ['computed','confirmed']"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="annual_rate" readonly="state in ['computed','confirmed']"/>
+                            <field name="term_years" readonly="state in ['computed','confirmed']"/>
+                        </group>
+                        <group>
+                            <field name="months" readonly="1"/>
+                            <field name="monthly_rate" readonly="1"/>
+                            <field name="monthly_payment" widget="monetary" readonly="1"/>
+                            <field name="start_date" widget="date" readonly="state in ['computed','confirmed']"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Accounting Configuration" 
+                           name="accounting_config_group"
+                           readonly="vendor_bills_created == True">
+                        <group>
+                            <field name="vendor_bill_journal_id" required="1" options="{'no_create': True}" readonly="state in ['computed','confirmed'] and vendor_bills_created == False"/>
+                            <field name="interest_expense_account_id" required="1" options="{'no_create': True}" readonly="state in ['computed','confirmed'] and vendor_bills_created == False"/>
+                        </group>
+                        <group>
+                            <field name="leasing_payable_account_id" required="1" options="{'no_create': True}" readonly="state in ['computed','confirmed'] and vendor_bills_created == False"/>
+                            <field name="lease_account_payable_id" required="1" options="{'no_create': True}" readonly="state in ['computed','confirmed'] and vendor_bills_created == False"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Summary" invisible="state == 'draft'">
+                        <group>
+                            <field name="total_payment" widget="monetary"/>
+                            <field name="total_interest" widget="monetary"/>
+                            <field name="total_principal" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="vendor_bills_created" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Amortization Schedule">
+                            <field name="line_ids" readonly="1">
+                                <list create="false" delete="false" edit="false">
+                                    <field name="sequence" string="Month"/>
+                                    <field name="date" widget="date" options="{'date_format': 'MMM d, yyyy'}"/>
+                                    <field name="payment" widget="monetary"/>
+                                    <field name="interest_rate" string="Rate"/>
+                                    <field name="interest_amount" widget="monetary"/>
+                                    <field name="principal_amount" widget="monetary"/>
+                                    <field name="remaining_balance" widget="monetary"/>
+                                    <field name="journal_entry_id" string="Journal Entry" widget="many2one" readonly="1"/>
+                                    <field name="currency_id" optional="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

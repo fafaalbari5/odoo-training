@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action - Tampilkan list view dulu -->
+    <record id="action_asset_approval_config" model="ir.actions.act_window">
+        <field name="name">Approval Configuration</field>
+        <field name="res_model">asset.approval.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure approvers
+            </p>
+            <p>
+                Set up who approves at each level (Manager, Sr. Manager, Director)
+            </p>
+        </field>
+    </record>
+
+    <!-- List View - Tanpa tombol Create -->
+    <record id="view_asset_approval_config_list" model="ir.ui.view">
+        <field name="name">asset.approval.config.list</field>
+        <field name="model">asset.approval.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="level_1_user_ids"/>
+                <field name="level_2_user_ids"/>
+                <field name="level_3_user_ids"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_asset_approval_config_form" model="ir.ui.view">
+        <field name="name">asset.approval.config.form</field>
+        <field name="model">asset.approval.config</field>
+        <field name="arch" type="xml">
+            <form string="Approval Configuration">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <field name="active"/>
+                    </group>
+
+                    <group string="Approvers">
+                        <group>
+                            <field name="level_1_user_ids" widget="many2many_tags" string="Level 1 Approvers"/>
+                        </group>
+                        <group>
+                            <field name="level_2_user_ids" widget="many2many_tags" string="Level 2 Approvers"/>
+                        </group>
+                        <group>
+                            <field name="level_3_user_ids" widget="many2many_tags" string="Level 3 Approvers"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Approval Rules">
+                            <field name="rule_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="brand_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                    <field name="min_quantity" string="If Quantity >"/>
+                                    <field name="required_level"/>
+                                </list>
+                            </field>
+                            <div class="text-muted" style="margin-top: 10px;">
+                                <strong>How rules work:</strong>
+                                <ul>
+                                    <li>Rules are evaluated from top to bottom (lower sequence first)</li>
+                                    <li>First matching rule determines the approval level</li>
+                                    <li>Leave Brands empty to apply to all brands</li>
+                                    <li>
+                                        <strong>Important:</strong> Put more specific rules (higher quantity) first</li>
+                                </ul>
+                                <strong>Example configuration for BMW:</strong>
+                                <ul>
+                                    <li>Rule 1: Brands=BMW, Mercedes | Quantity > 2 → Level 3</li>
+                                    <li>Rule 2: Brands=BMW, Mercedes | Quantity > 0 → Level 2</li>
+                                </ul>
+                                This ensures quantity > 2 gets Level 3, not Level 2.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_asset_request_root" 
+              name="Rental" 
+              sequence="10"/>
+    
+    <menuitem id="menu_asset_request" 
+              name="Asset Requests" 
+              parent="menu_asset_request_root" 
+              action="action_asset_request" 
+              sequence="10"/>
+
+    <menuitem id="menu_asset_approval_delegation" 
+              name="Delegate Approvals" 
+              parent="menu_asset_request_root" 
+              action="action_asset_request_approval_delegation" 
+              sequence="15"/>
+
+    <menuitem id="menu_asset_leasing_amortization" 
+              name="Lease Amortization" 
+              parent="menu_asset_request_root" 
+              action="action_asset_leasing_amortization" 
+              sequence="20"/>
+
+    <menuitem id="menu_asset_configuration" 
+              name="Configuration" 
+              parent="menu_asset_request_root" 
+              sequence="25"/>
+    
+    <menuitem id="menu_asset_approval_config" 
+              name="Approval Configuration" 
+              parent="menu_asset_configuration" 
+              action="action_asset_approval_config" 
+              sequence="10"/>
+    
+</odoo>

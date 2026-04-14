@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_res_users_form_inherit" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- Cari notebook di form users -->
+            <xpath expr="//notebook" position="inside">
+                <!-- Tambah page baru di akhir notebook -->
+                <page string="Estate Properties" name="estate_properties">
+                    <group>
+                        <field name="property_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="date_availability"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <!-- <xpath expr="//page[@name='other_settings']" position="before">
+        <page string="Estate Properties" name="estate_properties">
+            (Tambahkan sebelum page tertentu) konten page
+        </page>
+    </xpath>
+
+    <xpath expr="//page[@name='other_settings']" position="after">
+        <page string="Estate Properties" name="estate_properties">
+            (Tambahkan setelah page tertentu) konten page
+        </page>
+    </xpath> -->
+</odoo>

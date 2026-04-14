@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_asset_request_approval_delegation" model="ir.actions.act_window">
+        <field name="name">Delegate Approvals</field>
+        <field name="res_model">asset.request.approval.delegation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create, review, and manage approval delegations.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_asset_request_approval_delegation_list" model="ir.ui.view">
+        <field name="name">asset.request.approval.delegation.list</field>
+        <field name="model">asset.request.approval.delegation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="approver_id"/>
+                <field name="delegator_id"/>
+                <field name="delegate_to_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_asset_request_approval_delegate_form" model="ir.ui.view">
+        <field name="name">asset.request.approval.delegate.form</field>
+        <field name="model">asset.request.approval.delegation</field>
+        <field name="arch" type="xml">
+            <form string="Delegate Approval">
+                <sheet>
+                    <group>
+                        <field name="approver_id" required="1"/>
+                        <field name="delegator_id" readonly="1"/>
+                        <field name="delegate_to_id" required="1"/>
+                        <field name="date_from" required="1"/>
+                        <field name="date_to" required="1"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_delegate" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+[options]
+; Database configuration
+db_host = localhost
+db_port = 5432
+db_user = CHANGE_THIS
+db_password = CHANGE_THIS
+
+; Server configuration
+http_port = 8069
+http_interface = 0.0.0.0
+admin_passwd = CHANGE_THIS
+
+; Paths
+addons_path = custom_addons,data/addons/19.0
+
+; Logging
+logfile = ./logs/odoo.log
+log_level = info
+
+; Development settings (optional)
+; dev_mode = reload
+; debug_mode = False

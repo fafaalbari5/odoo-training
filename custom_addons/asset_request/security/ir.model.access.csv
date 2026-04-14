@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_asset_request,asset.request,model_asset_request,base.group_user,1,1,1,1
+access_asset_request_line,asset.request.line,model_asset_request_line,base.group_user,1,1,1,1
+access_asset_request_approval,asset.request.approval,model_asset_request_approval,base.group_user,1,1,1,1
+access_asset_request_approval_delegation,asset.request.approval.delegation,model_asset_request_approval_delegation,base.group_user,1,1,1,1
+access_asset_approval_config,asset.approval.config,model_asset_approval_config,base.group_user,1,1,1,1
+access_asset_approval_rule,asset.approval.rule,model_asset_approval_rule,base.group_user,1,1,1,1
+access_asset_request_approval_reject,asset.request.approval.reject,model_asset_request_approval_reject,base.group_user,1,1,1,1
+access_asset_leasing_amortization,asset.leasing.amortization,model_asset_leasing_amortization,base.group_user,1,1,1,1
+access_asset_leasing_amortization_line,asset.leasing.amortization.line,model_asset_leasing_amortization_line,base.group_user,1,1,1,1
+access_fleet_vehicle_brand_all,fleet.vehicle.model.brand.all,fleet.model_fleet_vehicle_model_brand,base.group_user,1,0,0,0
+access_fleet_vehicle_model_all,fleet.vehicle.model.all,fleet.model_fleet_vehicle_model,base.group_user,1,0,0,0
+access_asset_request_cron,asset.request.cron,model_asset_request_cron,base.group_user,1,0,0,0
