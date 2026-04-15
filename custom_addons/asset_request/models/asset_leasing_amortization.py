@@ -267,7 +267,6 @@ class AssetLeasingAmortization(models.Model):
         
         move_ids = []
         for line in self.line_ids:
-            # Create vendor bill dengan 2 invoice lines saja (tanpa credit line)
             move = self.env['account.move'].create({
                 'move_type': 'in_invoice',
                 'journal_id': self.vendor_bill_journal_id.id,
@@ -275,6 +274,8 @@ class AssetLeasingAmortization(models.Model):
                 'date': line.date,
                 'partner_id': self.partner_id.id,
                 'ref': f'Lease Payment - {self.name} - Month {line.sequence}',
+                'leasing_amortization_id': self.id,
+                'leasing_line_id': line.id,
                 'invoice_line_ids': [
                     (0, 0, {
                         'account_id': self.leasing_payable_account_id.id,
@@ -290,7 +291,6 @@ class AssetLeasingAmortization(models.Model):
                     }),
                 ],
             })
-            
             move_ids.append(move.id)
             line.journal_entry_id = move.id
         

@@ -168,11 +168,13 @@ class AssetRequest(models.Model):
         pending = self._get_current_pending_approval()
         return pending.filtered(lambda a: a.current_approver_id == self.env.user)
 
+    @api.depends('approval_line_ids', 'approval_line_ids.status')
     def _compute_can_approve(self):
         for request in self:
             pending = request._get_current_user_pending_approval()
             request.can_approve = bool(pending)
 
+    @api.depends('approval_line_ids', 'approval_line_ids.status')
     def _compute_can_reject(self):
         for request in self:
             pending = request._get_current_user_pending_approval()

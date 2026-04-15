@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Action - Tampilkan list view dulu -->
+    <!-- Action -->
     <record id="action_asset_approval_config" model="ir.actions.act_window">
         <field name="name">Approval Configuration</field>
         <field name="res_model">asset.approval.config</field>
@@ -15,7 +15,6 @@
         </field>
     </record>
 
-    <!-- List View - Tanpa tombol Create -->
     <record id="view_asset_approval_config_list" model="ir.ui.view">
         <field name="name">asset.approval.config.list</field>
         <field name="model">asset.approval.config</field>
@@ -42,11 +41,7 @@
                         </h1>
                     </div>
 
-                    <group>
-                        <field name="active"/>
-                    </group>
-
-                    <group string="Approvers">
+                    <group string="Approvers" col="2">
                         <group>
                             <field name="level_1_user_ids" widget="many2many_tags" string="Level 1 Approvers"/>
                         </group>
@@ -74,8 +69,7 @@
                                     <li>Rules are evaluated from top to bottom (lower sequence first)</li>
                                     <li>First matching rule determines the approval level</li>
                                     <li>Leave Brands empty to apply to all brands</li>
-                                    <li>
-                                        <strong>Important:</strong> Put more specific rules (higher quantity) first</li>
+                                    <li><strong>Important:</strong> Put more specific rules (higher quantity) first</li>
                                 </ul>
                                 <strong>Example configuration for BMW:</strong>
                                 <ul>

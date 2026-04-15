@@ -5,5 +5,5 @@ from . import asset_request_approval_delegation
 from . import asset_request_line
 from . import asset_approval_config
 from . import asset_leasing_amortization
-# from . import account_move_inherit
+from . import account_move_inherit
 from . import asset_request_cron
